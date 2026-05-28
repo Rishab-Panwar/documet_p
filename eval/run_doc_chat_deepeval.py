@@ -109,12 +109,26 @@ def main():
     chat_ingestor.built_retriver(adapters)
     log.info("Ingestion complete", session_id=chat_ingestor.session_id)
 
-    # 2) Pull dataset from Confident AI
+    # 2) Pull dataset from Confident AI (with fallback)
     dataset = EvaluationDataset()
-    dataset.pull(alias=DATASET_ALIAS)
+    try:
+        dataset.pull(alias=DATASET_ALIAS)
+    except Exception as e:
+        log.warning("Failed to pull dataset; falling back to local goldens", error=str(e))
+
+    goldens = getattr(dataset, "goldens", []) or []
+    if not goldens:
+        class _G:
+            def __init__(self, q: str, exp: str = ""):
+                self.input = q
+                self.expected_output = exp
+        goldens = [
+            _G("What is this document about?"),
+            _G("Summarize the key points from the document."),
+        ]
 
     # 3) For each golden, query RAG and build test cases
-    for golden in dataset.goldens:
+    for golden in goldens:
         try:
             result = query_rag(golden.input, session_id=chat_ingestor.session_id)
             test_case = LLMTestCase(
