@@ -17,14 +17,14 @@ from deepeval.metrics import (
 )
 from deepeval import evaluate
 from deepeval.models.base_model import DeepEvalBaseLLM
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_groq import ChatGroq
 
 
-class GeminiJudge(DeepEvalBaseLLM):
+class GroqJudge(DeepEvalBaseLLM):
     def __init__(self):
-        self.model = ChatGoogleGenerativeAI(
-            model="gemini-2.5-flash",
-            google_api_key=os.getenv("GOOGLE_API_KEY"),
+        self.model = ChatGroq(
+            model="llama-3.1-8b-instant",
+            api_key=os.getenv("GROQ_API_KEY"),
         )
 
     def load_model(self):
@@ -37,7 +37,7 @@ class GeminiJudge(DeepEvalBaseLLM):
         return self.generate(prompt)
 
     def get_model_name(self) -> str:
-        return "gemini-2.5-flash"
+        return "llama-3.1-8b-instant"
 
 from logger import GLOBAL_LOGGER as log
 
@@ -149,7 +149,7 @@ def main():
         except Exception as e:
             log.error("Failed to build mm test case", error=str(e), question=golden.input)
 
-    judge = GeminiJudge()
+    judge = GroqJudge()
     metrics = [
         AnswerRelevancyMetric(model=judge),
         FaithfulnessMetric(model=judge),

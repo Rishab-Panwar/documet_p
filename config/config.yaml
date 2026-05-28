@@ -28,7 +28,7 @@ llm:
 
 multimodal:
   enabled: false
-  provider: "google" # vision provider: "openai" | "groq" | "google"
-  vision_model: "gemini-1.5-flash"
+  provider: "groq" # vision provider: "openai" | "groq" | "google"
+  vision_model: "llama-3.2-11b-vision-preview"
   hires_strategy: true # use unstructured partition strategy="hi_res"
   max_images: 5 # Groq vision supports up to 5 images per request
