@@ -23,7 +23,7 @@ from langchain_groq import ChatGroq
 class GroqJudge(DeepEvalBaseLLM):
     def __init__(self):
         self.model = ChatGroq(
-            model="llama-3.1-8b-instant",
+            model="llama-3.3-70b-versatile",
             api_key=os.getenv("GROQ_API_KEY"),
         )
 
@@ -37,7 +37,7 @@ class GroqJudge(DeepEvalBaseLLM):
         return self.generate(prompt)
 
     def get_model_name(self) -> str:
-        return "llama-3.1-8b-instant"
+        return "llama-3.3-70b-versatile"
 
 from logger import GLOBAL_LOGGER as log
 
