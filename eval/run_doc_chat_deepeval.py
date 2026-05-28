@@ -153,7 +153,13 @@ def main():
         HallucinationMetric(model=judge),
     ]
 
-    evaluate(test_cases=dataset.test_cases, metrics=metrics)
+    try:
+        evaluate(test_cases=dataset.test_cases, metrics=metrics)
+    except Exception as e:
+        if "Invalid API key" in str(e) or "ConfidentApiError" in type(e).__name__:
+            log.warning("DeepEval results upload skipped (no Confident AI key) — evaluation complete", error=str(e))
+        else:
+            raise
 
 
 if __name__ == "__main__":
