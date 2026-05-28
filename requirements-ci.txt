@@ -35,4 +35,5 @@ sqlalchemy>=2
 aiosqlite
 passlib[bcrypt]
 pyjwt
+langgraph
 -e .
