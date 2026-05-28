@@ -16,6 +16,28 @@ from deepeval.metrics import (
     HallucinationMetric,
 )
 from deepeval import evaluate
+from deepeval.models.base_model import DeepEvalBaseLLM
+from langchain_google_genai import ChatGoogleGenerativeAI
+
+
+class GeminiJudge(DeepEvalBaseLLM):
+    def __init__(self):
+        self.model = ChatGoogleGenerativeAI(
+            model="gemini-2.5-flash",
+            google_api_key=os.getenv("GOOGLE_API_KEY"),
+        )
+
+    def load_model(self):
+        return self.model
+
+    def generate(self, prompt: str) -> str:
+        return self.model.invoke(prompt).content
+
+    async def a_generate(self, prompt: str) -> str:
+        return self.generate(prompt)
+
+    def get_model_name(self) -> str:
+        return "gemini-2.5-flash"
 
 from logger import GLOBAL_LOGGER as log
 
@@ -127,13 +149,14 @@ def main():
         except Exception as e:
             log.error("Failed to build mm test case", error=str(e), question=golden.input)
 
+    judge = GeminiJudge()
     metrics = [
-        AnswerRelevancyMetric(),
-        FaithfulnessMetric(),
-        ContextualPrecisionMetric(),
-        ContextualRecallMetric(),
-        ContextualRelevancyMetric(),
-        HallucinationMetric(),
+        AnswerRelevancyMetric(model=judge),
+        FaithfulnessMetric(model=judge),
+        ContextualPrecisionMetric(model=judge),
+        ContextualRecallMetric(model=judge),
+        ContextualRelevancyMetric(model=judge),
+        HallucinationMetric(model=judge),
     ]
 
     evaluate(test_cases=dataset.test_cases, metrics=metrics)
