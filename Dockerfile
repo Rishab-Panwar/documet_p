@@ -11,14 +11,12 @@ WORKDIR /app
 # Install OS dependencies
 RUN apt-get update && apt-get install -y build-essential poppler-utils && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements
+# Copy requirements and install first (cached layer — only rebuilds when requirements.txt changes)
 COPY requirements.txt .
-
-# Copy project files
-COPY . .
-
-# Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy project files (separate layer so code changes don't trigger pip reinstall)
+COPY . .
 
 # Expose port
 EXPOSE 8080
