@@ -37,5 +37,4 @@ passlib[bcrypt]
 pyjwt
 flashrank
 langgraph
-mcp
 -e .
