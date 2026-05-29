@@ -242,7 +242,11 @@ const tokenKey = "dp_jwt";
 function getToken() { return localStorage.getItem(tokenKey); }
 function authHeader() { const t = getToken(); return t ? { "Authorization": `Bearer ${t}` } : {}; }
 
-if (!getToken()) window.location.href = "/login";
+if (!getToken()) { window.location.href = "/login"; }
+// Verify token is valid on load
+fetch("/protected", { headers: { "Authorization": `Bearer ${getToken()}` } })
+  .then(r => { if (!r.ok) { localStorage.removeItem(tokenKey); window.location.href = "/login"; } })
+  .catch(() => {});
 
 // ===== TOAST =====
 function toast(msg, type = "info") {
