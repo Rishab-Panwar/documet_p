@@ -1,10 +1,25 @@
-# DocVault — AI-Powered Document Intelligence Platform
+<div align="center">
 
-> Chat with your documents, analyze content, compare versions, and query via agentic RAG — all in one platform.
+<img width="80" height="80" alt="ChatGPT Image May 29, 2026, 06_10_06 PM" src="https://github.com/user-attachments/assets/8f64a368-fdcd-472c-ae2e-8ca2911c2258">
 
-**Live:** [https://docvault.rishabai.me](https://docvault.rishabai.me)
+# DocVault
+
+*AI-powered document intelligence. Chat, analyze, compare, and query — in one platform.*
+
+[Features](#features) · [Architecture](#system-architecture) · [Tech Stack](#tech-stack) · [Local Setup](#local-setup)
+
+![RAG](https://img.shields.io/badge/RAG-FAISS_%C2%B7_LangGraph-0F6E56)
+![Infra](https://img.shields.io/badge/Infra-AWS_ECS_Fargate-1A7F37)
+![Eval](https://img.shields.io/badge/Eval-DeepEval_%C2%B7_6_metrics-BC4C00)
+
+DocVault is an AI document platform with **conversational RAG**, **agentic query rewriting** via LangGraph, **multimodal PDF understanding**, structured metadata extraction, and a **built-in MCP server** for Claude Desktop and Cursor. Production-deployed on AWS ECS with a full CI/CD pipeline.
+
+**Live:** [docvault.rishabai.me](https://docvault.rishabai.me)
+
+</div>
 
 ---
+
 
 ## Features
 
